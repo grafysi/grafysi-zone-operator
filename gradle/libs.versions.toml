@@ -1,0 +1,32 @@
+[versions]
+spring = "6.1.6"
+log4j2 = "2.23.1"
+jakarta-annotation = "3.0.0"
+jakarta-servlet = "6.0.0"
+jackson = "2.17.0"
+josdk = "4.9.1"
+fabric8 = "6.13.1"
+
+[libraries]
+# web stack
+spring-webmvc = {module = "org.springframework:spring-webmvc", version.ref = "spring"}
+spring-context-supprt = {module = "org.springframework:spring-context-support", version.ref = "spring"}
+jakarta-annotation = {module = "jakarta.annotation:jakarta.annotation-api", version.ref = "jakarta-annotation"}
+jakarta-servlet = {module = "jakarta.servlet:jakarta.servlet-api", version.ref = "jakarta-servlet"}
+jackson-datatype-jsr310 = {module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310", version.ref = "jackson"}
+jackson-dataformat-xml = {module = "com.fasterxml.jackson.dataformat:jackson-dataformat-xml", version.ref = "jackson"}
+
+# operator stack
+josdk = {module = "io.javaoperatorsdk:operator-framework", version.ref = "josdk"}
+fabric8-crd-generator = {module = "io.fabric8:crd-generator-apt", version.ref = "fabric8"}
+
+# log stack
+log4j-core = {module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j2"}
+log4j-api = {module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j2"}
+log4j-slf4j-impl = {module = "org.apache.logging.log4j:log4j-slf4j2-impl", version.ref = "log4j2"}
+
+# test stack
+spring-test = {module = "org.springframework:spring-test", version.ref = "spring"}
+
+[plugins]
+lombok = {id = "io.freefair.lombok", version = "8.6"}
