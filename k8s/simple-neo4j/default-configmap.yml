@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: default-neo4j-config
+  namespace: "neo4j"
+data:
+  server.memory.pagecache.size: "512M"
+  server.memory.heap.max_size: "512M"
+

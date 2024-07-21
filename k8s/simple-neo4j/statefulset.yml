@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: simple-neo4j
+  name: simple-neo4j
+  namespace: "neo4j"
+spec:
+  serviceName: "simple-neo4j"
+  podManagementPolicy: "Parallel" # This setting means that the StatefulSet controller doesn't block applying changes until the existing Pod is READY.
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "simple-neo4j"
+  template:
+    metadata:
+      labels:
+        app: "simple-neo4j"
+    spec:
+        containers:
+          - name: "neo4j"
+            image: "neo4j:5.20.0"
+            imagePullPolicy: "IfNotPresent"
+            envFrom:
+              - configMapRef:
+                  name: neo4j-auth-config
+            ports:
+              - containerPort: 7474
+                name: http
+              - containerPort: 7687
+                name: bolt
+            volumeMounts:
+              - mountPath: "/config/neo4j.conf"
+                name: neo4j-conf
+              - mountPath: "/config/server-logs.xml"
+                name: neo4j-server-logs
+              - mountPath: "/config/user-logs.xml"
+                name: neo4j-user-logs
+              - mountPath: "/data"
+                name: neo4j-data
+            readinessProbe:
+              tcpSocket:
+                port: 7687
+            livenessProbe:
+              tcpSocket:
+                port: 7687
+            startupProbe:
+              tcpSocket:
+                port: 7687
+        volumes:
+          - name: neo4j-conf
+#            emptyDir:
+#              sizeLimit: "512Mi"
+            projected:
+              defaultMode: 0440
+              sources:
+                - configMap:
+                    name: "default-neo4j-config"
+                - configMap:
+                    name: "custom-neo4j-config"
+          - name: neo4j-server-logs
+            configMap:
+              name: "neo4j-server-logs-config"
+          - name: neo4j-user-logs
+            configMap:
+              name: "neo4j-user-logs-config"
+  volumeClaimTemplates:
+    - metadata:
+        name: neo4j-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: node-local-sc
+        resources:
+          requests:
+            storage: 5Gi

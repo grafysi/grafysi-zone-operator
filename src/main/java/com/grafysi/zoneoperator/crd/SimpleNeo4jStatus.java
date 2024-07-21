@@ -18,6 +18,4 @@ public class SimpleNeo4jStatus {
     }
 
     public void setExternalIP(String externalIP) {
-        this.externalIP = externalIP;
-    }
-}
+        this.externalIP = externa

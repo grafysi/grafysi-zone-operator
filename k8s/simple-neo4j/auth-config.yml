@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: neo4j-auth-config
+  namespace: "neo4j"
+data:
+  NEO4J_AUTH: "neo4j/abcd1234"
